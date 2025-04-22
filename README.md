@@ -40,7 +40,18 @@ NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-5. Run the development server:
+5. Import the data:
+   - Place your `earmarks.csv` file in the project root
+   - The CSV should have the following columns:
+     ```
+     year,agency,subunit,subcommittee,account,budget_number,budget_function,recipient,amount,location,member
+     ```
+   - Import the data using psql:
+     ```bash
+     PGPASSWORD=postgres psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -c "\copy earmarks(year,agency,subunit,subcommittee,account,budget_number,budget_function,recipient,amount,location,member) from 'earmarks.csv' with csv header;"
+     ```
+
+6. Run the development server:
 ```bash
 npm run dev
 ```
@@ -68,6 +79,15 @@ create table earmarks (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 ```
+
+## Data Source
+
+The earmarks data is not included in this repository due to its size. To use this application, you'll need:
+1. A CSV file containing earmarks data with the columns specified above
+2. Follow the import instructions in the "Local Development" section
+3. The data should follow the schema defined in the database migration
+
+Note: Large CSV files are excluded from the repository via `.gitignore` to keep the repository size manageable.
 
 ## Contributing
 
